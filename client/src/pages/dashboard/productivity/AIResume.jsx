@@ -383,7 +383,7 @@ function AIResume() {
                       </div>
                     </div>
 
-                    <div className="grid grid-cols-4 gap-3 pt-4 border-t border-gray-50">
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-3 pt-4 border-t border-gray-50">
                       <ScoreRing
                         score={result.scores.atsCompatibility}
                         label="ATS"

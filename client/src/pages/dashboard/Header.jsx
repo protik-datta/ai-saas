@@ -1,15 +1,23 @@
-import { Coins } from "lucide-react";
+import { Coins, Menu } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 
-const Header = () => {
+const Header = ({ onMenuClick }) => {
   const { user, credit } = useAuth();
   const navigate = useNavigate();
 
   const credits = credit.remaining;
 
   return (
-    <header className="h-16 bg-white/40 backdrop-blur-md border-b border-gray-100 px-6 flex items-center justify-end">
+    <header className="h-16 bg-white/40 backdrop-blur-md border-b border-gray-100 px-4 md:px-6 flex items-center justify-between md:justify-end">
+      {/* Mobile Menu Toggle */}
+      <button 
+        onClick={onMenuClick}
+        className="p-2 hover:bg-gray-100 rounded-lg md:hidden text-gray-500 transition-colors"
+      >
+        <Menu size={20} />
+      </button>
+
       {/* Credits and Dashboard Button */}
       <div className="flex items-center gap-3 px-4 py-2 bg-white rounded-xl border border-gray-200">
         {/* Credits Badge */}

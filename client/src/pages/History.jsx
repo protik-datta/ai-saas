@@ -147,7 +147,7 @@ const HistoryCard = ({ item, onDelete, onView }) => {
             e.stopPropagation();
             onDelete(item._id);
           }}
-          className="shrink-0 w-9 h-9 rounded-xl flex items-center justify-center text-gray-300 hover:bg-red-50 hover:text-red-500 transition-all duration-200 opacity-0 group-hover:opacity-100"
+          className="shrink-0 w-9 h-9 rounded-xl flex items-center justify-center text-gray-300 hover:bg-red-50 hover:text-red-500 transition-all duration-200 opacity-100 md:opacity-0 md:group-hover:opacity-100"
         >
           <Trash2 size={16} />
         </button>
@@ -165,7 +165,7 @@ const HistoryCard = ({ item, onDelete, onView }) => {
       </div>
 
       <div className="mt-5 flex items-center justify-between">
-        <span className="text-[11px] font-bold text-[#5044E5] opacity-0 group-hover:opacity-100 transition-all flex items-center gap-1">
+        <span className="text-[11px] font-bold text-[#5044E5] opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-all flex items-center gap-1">
           Quick View <ChevronRight size={14} />
         </span>
         <button
@@ -393,7 +393,7 @@ const History = () => {
 
             <div className="flex gap-3">
               {/* Tool Filter */}
-              <div className="relative min-w-50">
+              <div className="relative flex-1 lg:min-w-50">
                 <Filter
                   size={16}
                   className="absolute left-5 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none"

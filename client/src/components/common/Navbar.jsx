@@ -8,18 +8,22 @@ import {
   History,
   BookOpen,
   Cpu,
+  Key,
+  Trash,
 } from "lucide-react";
 import Container from "./Container";
 import { assets } from "../../assets/assets";
 import { useAuth } from "../../context/AuthContext";
 import Loader from "../../utils/Loader";
-import { useLogout } from '../../hooks/authApi.hook';
-import { showSuccess } from '../../utils/toast';
+import { useDeleteAccount, useLogout } from "../../hooks/authApi.hook";
+import { showSuccess } from "../../utils/toast";
+import DeleteAccount from '../../pages/auth/DeleteAccount';
 
 const Navbar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
   const dropdownRef = useRef(null);
   const navigate = useNavigate();
 
@@ -33,6 +37,7 @@ const Navbar = () => {
     { id: 5, title: "FAQ", path: "/#faq" },
   ];
 
+  // Close dropdown on outside click
   useEffect(() => {
     const handler = (e) => {
       if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
@@ -42,6 +47,14 @@ const Navbar = () => {
     document.addEventListener("mousedown", handler);
     return () => document.removeEventListener("mousedown", handler);
   }, []);
+
+  // Lock body scroll when mobile menu is open
+  useEffect(() => {
+    document.body.style.overflow = menuOpen ? "hidden" : "";
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [menuOpen]);
 
   const handleNavClick = (path) => {
     setMenuOpen(false);
@@ -66,14 +79,29 @@ const Navbar = () => {
 
   const { mutate: logout, isPending: isLoggingOut } = useLogout();
 
-    const handleLogout = () => {
-      logout(undefined, {
-        onSuccess: () => {
-          setUser(null);
-          showSuccess("Logged out successfully");
-          navigate("/");
+  const handleLogout = () => {
+    logout(undefined, {
+      onSuccess: () => {
+        setUser(null);
+        showSuccess("Logged out successfully");
+        navigate("/");
+      },
+    });
+  };
+
+    const { mutate: deleteAccount, isPending: isDeleting } = useDeleteAccount();
+
+    const handleDeleteAccount = (password) => {
+      deleteAccount(
+        { password },
+        {
+          onSuccess: () => {
+            showSuccess("Account deleted successfully");
+            setShowDeleteModal(false);
+            navigate("/register");
+          },
         },
-      });
+      );
     };
 
   const avatarLetter = user?.username?.trim()?.charAt(0)?.toUpperCase() || "U";
@@ -117,6 +145,7 @@ const Navbar = () => {
                   <Loader size="sm" />
                 </div>
               ) : user ? (
+                /* Profile avatar — visible on BOTH mobile & desktop */
                 <div className="relative" ref={dropdownRef}>
                   <button
                     onClick={() => setDropdownOpen((v) => !v)}
@@ -125,11 +154,10 @@ const Navbar = () => {
                     <div className="w-8 h-8 rounded-full bg-[#5044E5] text-white text-[13px] font-bold flex items-center justify-center">
                       {avatarLetter}
                     </div>
-
+                    {/* username + chevron: desktop only */}
                     <span className="hidden md:block text-[14px] font-medium text-[#3B3B3B]">
                       {username}
                     </span>
-
                     <svg
                       width="12"
                       height="12"
@@ -149,8 +177,9 @@ const Navbar = () => {
                     </svg>
                   </button>
 
+                  {/* Dropdown — same on mobile & desktop, z-[80] to stay above header */}
                   {dropdownOpen && (
-                    <div className="absolute right-0 top-[calc(100%+8px)] w-52 rounded-2xl bg-white shadow-[0_8px_40px_rgba(0,0,0,0.13)] border border-[#F0F0F0] overflow-hidden z-50">
+                    <div className="absolute right-0 top-[calc(100%+8px)] w-52 rounded-2xl bg-white shadow-[0_8px_40px_rgba(0,0,0,0.13)] border border-[#F0F0F0] overflow-hidden z-[80]">
                       <div className="px-4 py-3.5 border-b border-[#F5F5F5]">
                         <p className="text-[13px] font-semibold">
                           {user.username}
@@ -159,7 +188,6 @@ const Navbar = () => {
                           {user.email}
                         </p>
                       </div>
-
                       <div className="p-1.5">
                         {[
                           { icon: Cpu, label: "Dashboard", path: "/dashboard" },
@@ -169,32 +197,44 @@ const Navbar = () => {
                             path: "/dashboard/history",
                           },
                           { icon: BookOpen, label: "Docs", path: "/docs" },
+                          {
+                            icon: Key,
+                            label: "Forget Password",
+                            path: "/forgot-password",
+                          },
                         ].map((item) => (
                           <button
                             key={item.path}
                             onClick={() => {
-                              navigate(item.path);
                               setDropdownOpen(false);
+                              navigate(item.path);
                             }}
-                            className="w-full flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-[13px]"
+                            className="w-full flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-[13px] text-gray-700 hover:bg-purple-50 hover:text-[#5044E5] transition-colors"
                           >
                             <item.icon size={14} />
                             {item.label}
                           </button>
                         ))}
                       </div>
-
                       <div className="p-1.5 border-t border-[#F5F5F5]">
                         <button
                           onClick={() => {
-                            handleLogout()
                             setDropdownOpen(false);
-                            navigate("/");
+                            handleLogout();
                           }}
-                          className="w-full flex items-center gap-2.5 px-3 py-2.5 text-red-400"
+                          className="w-full flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-[13px] text-red-400 hover:bg-red-50 transition-colors"
                         >
                           <LogOut size={14} />
                           Log out
+                        </button>
+                        <button
+                          onClick={() => {
+                            setShowDeleteModal(true);
+                          }}
+                          className="w-full flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-[13px] text-red-400 hover:bg-red-50 transition-colors"
+                        >
+                          <Trash size={14} />
+                          Delete Account
                         </button>
                       </div>
                     </div>
@@ -216,9 +256,11 @@ const Navbar = () => {
                 </button>
               )}
 
+              {/* Hamburger — mobile only, for nav links */}
               <button
                 onClick={() => setMenuOpen((prev) => !prev)}
                 className="md:hidden p-1.5 rounded-lg text-purple-400"
+                aria-label="Toggle menu"
               >
                 {menuOpen ? <X size={22} /> : <Menu size={22} />}
               </button>
@@ -226,6 +268,81 @@ const Navbar = () => {
           </nav>
         </Container>
       </header>
+
+      {/* ── Mobile Drawer (nav links only) ── */}
+      {/* Backdrop */}
+      <div
+        onClick={() => setMenuOpen(false)}
+        className={`fixed inset-0 z-[60] bg-black/40 backdrop-blur-sm transition-opacity duration-300 md:hidden ${
+          menuOpen
+            ? "opacity-100 pointer-events-auto"
+            : "opacity-0 pointer-events-none"
+        }`}
+      />
+
+      {/* Drawer panel — slides in from left */}
+      <div
+        className={`fixed top-0 left-0 h-full w-72 z-[70] bg-white shadow-2xl flex flex-col transition-transform duration-300 ease-in-out md:hidden ${
+          menuOpen ? "translate-x-0" : "-translate-x-full"
+        }`}
+      >
+        {/* Drawer Header */}
+        <div className="flex items-center justify-between px-5 py-4 border-b border-[#F0F0F0]">
+          <img
+            src={assets.logo}
+            alt="logo"
+            className="w-28 h-9 object-contain cursor-pointer"
+            onClick={() => {
+              navigate("/");
+              setMenuOpen(false);
+            }}
+          />
+          <button
+            onClick={() => setMenuOpen(false)}
+            className="p-1.5 rounded-lg text-gray-400 hover:text-gray-600 hover:bg-gray-100 transition-colors"
+          >
+            <X size={20} />
+          </button>
+        </div>
+
+        {/* Nav Links */}
+        <nav className="flex-1 overflow-y-auto px-3 py-4 flex flex-col gap-1">
+          {navLinks.map((item) => (
+            <button
+              key={item.id}
+              onClick={() => handleNavClick(item.path)}
+              className="w-full text-left text-[15px] font-medium text-gray-700 px-4 py-3 rounded-xl hover:bg-purple-50 hover:text-[#5044E5] transition-all duration-150"
+            >
+              {item.title}
+            </button>
+          ))}
+        </nav>
+
+        {/* Drawer Footer — Get Started for guests */}
+        {initialized && !user && (
+          <div className="px-4 pb-6 pt-3 border-t border-[#F0F0F0]">
+            <button
+              onClick={handleGetStarted}
+              disabled={loading || authLoading}
+              className="w-full flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-[#5044E5] text-white text-sm font-semibold shadow-[0_4px_20px_rgba(80,68,229,0.25)] active:scale-[0.98] transition-all duration-200 disabled:opacity-70 disabled:cursor-not-allowed"
+            >
+              {loading || authLoading ? (
+                <Loader size="sm" />
+              ) : (
+                <>
+                  Get Started <ArrowRight size={16} />
+                </>
+              )}
+            </button>
+          </div>
+        )}
+      </div>
+      <DeleteAccount
+        isOpen={showDeleteModal}
+        isPending={isDeleting}
+        onClose={() => setShowDeleteModal(false)}
+        onConfirm={handleDeleteAccount}
+      />
     </>
   );
 };

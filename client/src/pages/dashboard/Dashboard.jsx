@@ -133,8 +133,8 @@ const Dashboard = () => {
   return (
     <div className="flex-1 overflow-y-auto bg-gray-50 min-h-screen">
       {/* ── Header ─────────────────────────────────────────────────────────── */}
-      <div className="bg-white border-b border-gray-100 px-6 pt-6 pb-0 sticky top-0 z-10">
-        <div className="flex items-center justify-between gap-4 mb-4">
+      <div className="bg-white border-b border-gray-100 px-4 md:px-6 pt-6 pb-0 sticky top-0 z-10">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-4">
           {/* Greeting */}
           <div>
             <h1 className="text-[18px] font-bold text-gray-900 leading-tight">
@@ -146,7 +146,7 @@ const Dashboard = () => {
           </div>
 
           {/* Search Bar */}
-          <div className="relative w-full max-w-xs" ref={searchRef}>
+          <div className="relative w-full sm:max-w-xs" ref={searchRef}>
             <Search
               size={14}
               className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none"
@@ -219,9 +219,9 @@ const Dashboard = () => {
       </div>
 
       {/* ── Body ───────────────────────────────────────────────────────────── */}
-      <div className="px-6 py-5">
+      <div className="px-4 md:px-6 py-5">
         {/* Stats Row */}
-        <div className="grid grid-cols-4 gap-3 mb-6">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
           {STATS.map((s) => (
             <div
               key={s.label}
