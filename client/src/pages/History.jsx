@@ -22,8 +22,8 @@ import {
   useClearAllHistory,
   useDeleteHistoryByTool,
 } from "../hooks/authApi.hook";
-import { formatDate, toTitle, truncate } from "../helpers/histroyHelper";
-import { ConfirmModal } from "../utils/ConfrimModal";
+import { formatDate, toTitle, truncate } from "../helpers/historyHelper";
+import { ConfirmModal } from "../utils/ConfirmModal";
 import Loader from "../utils/Loader";
 import { parseToPlainText } from "../utils/textParser";
 

@@ -8,6 +8,8 @@ import Loader from "../../utils/Loader";
 const ResetPassword = () => {
   const navigate = useNavigate();
   const { token } = useParams();
+  const location = useLocation();
+  const { otp, email } = location.state || {};
 
   const { mutate: resetPassword, isPending } = useResetPassword();
 
@@ -33,8 +35,10 @@ const ResetPassword = () => {
       return;
     }
 
+    const resetPasswordToken = token || otp;
+  
     resetPassword(
-      { token, data: { password: form.password } },
+      { token: resetPasswordToken, data: { password: form.password, email } },
       {
         onSuccess: () => {
           showSuccess("Password reset successfully");

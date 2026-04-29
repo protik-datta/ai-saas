@@ -4,7 +4,7 @@ const fs = require("fs");
 
 // ensure logs folder exists
 const logDir = path.join(__dirname, "..", "logs");
-if (!fs.existsSync(logDir)) {
+if (process.env.NODE_ENV !== "production" && !fs.existsSync(logDir)) {
   fs.mkdirSync(logDir);
 }
 
@@ -16,28 +16,32 @@ const logFormat = winston.format.combine(
   }),
 );
 
-const logger = winston.createLogger({
-  level: "info",
-  format: logFormat,
+const transports = [new winston.transports.Console()];
 
-  transports: [
-    new winston.transports.Console(),
-
+if (process.env.NODE_ENV !== "production") {
+  transports.push(
     new winston.transports.File({
       filename: path.join(logDir, "error.log"),
       level: "error",
     }),
-
     new winston.transports.File({
       filename: path.join(logDir, "combined.log"),
     }),
-  ],
+  );
+}
 
-  exceptionHandlers: [
-    new winston.transports.File({
-      filename: path.join(logDir, "exceptions.log"),
-    }),
-  ],
+const logger = winston.createLogger({
+  level: "info",
+  format: logFormat,
+  transports,
+  exceptionHandlers:
+    process.env.NODE_ENV !== "production"
+      ? [
+          new winston.transports.File({
+            filename: path.join(logDir, "exceptions.log"),
+          }),
+        ]
+      : [],
 });
 
 module.exports = logger;
