@@ -141,7 +141,7 @@ const Navbar = () => {
             {/* Right Side */}
             <div className="flex items-center gap-3">
               {!initialized ? (
-                <div className="hidden md:flex items-center justify-center w-[120px] h-10">
+                <div className="hidden md:flex items-center justify-center w-30 h-10">
                   <Loader size="sm" />
                 </div>
               ) : user ? (
@@ -179,7 +179,7 @@ const Navbar = () => {
 
                   {/* Dropdown — same on mobile & desktop, z-[80] to stay above header */}
                   {dropdownOpen && (
-                    <div className="absolute right-0 top-[calc(100%+8px)] w-52 rounded-2xl bg-white shadow-[0_8px_40px_rgba(0,0,0,0.13)] border border-[#F0F0F0] overflow-hidden z-[80]">
+                    <div className="absolute right-0 top-[calc(100%+8px)] w-52 rounded-2xl bg-white shadow-[0_8px_40px_rgba(0,0,0,0.13)] border border-[#F0F0F0] overflow-hidden z-80">
                       <div className="px-4 py-3.5 border-b border-[#F5F5F5]">
                         <p className="text-[13px] font-semibold">
                           {user.username}
@@ -273,7 +273,7 @@ const Navbar = () => {
       {/* Backdrop */}
       <div
         onClick={() => setMenuOpen(false)}
-        className={`fixed inset-0 z-[60] bg-black/40 backdrop-blur-sm transition-opacity duration-300 md:hidden ${
+        className={`fixed inset-0 z-60 bg-black/40 backdrop-blur-sm transition-opacity duration-300 md:hidden ${
           menuOpen
             ? "opacity-100 pointer-events-auto"
             : "opacity-0 pointer-events-none"
@@ -282,7 +282,7 @@ const Navbar = () => {
 
       {/* Drawer panel — slides in from left */}
       <div
-        className={`fixed top-0 left-0 h-full w-72 z-[70] bg-white shadow-2xl flex flex-col transition-transform duration-300 ease-in-out md:hidden ${
+        className={`fixed top-0 left-0 h-full w-72 z-70 bg-white shadow-2xl flex flex-col transition-transform duration-300 ease-in-out md:hidden ${
           menuOpen ? "translate-x-0" : "-translate-x-full"
         }`}
       >
