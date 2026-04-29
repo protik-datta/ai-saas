@@ -7,10 +7,12 @@ const cors = require("cors");
 const rateLimit = require("express-rate-limit");
 const cookieParser = require("cookie-parser");
 const compression = require("compression");
+const hpp = require("hpp");
 const app = express();
 
 // --- Security ---
 app.use(helmet());
+app.use(hpp());
 
 // --- Logging ---
 const isProduction = process.env.NODE_ENV === "production";

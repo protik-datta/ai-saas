@@ -175,7 +175,7 @@ export default function ContentRepurser() {
           </div>
 
           {/* Output */}
-          <div className="lg:col-span-3">
+          <div className="lg:col-span-3 mb-30">
             <AnimatePresence mode="wait">
               {!results && !isPending && !isError && (
                 <motion.div

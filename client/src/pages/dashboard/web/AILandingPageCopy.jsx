@@ -292,7 +292,7 @@ export default function AILandingPageCopy() {
           </div>
 
           {/* Output */}
-          <div className="lg:col-span-3 space-y-4">
+          <div className="lg:col-span-3 space-y-4 mb-30">
             <AnimatePresence mode="wait">
               {!result && !isPending && !isError && (
                 <motion.div

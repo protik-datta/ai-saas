@@ -167,7 +167,7 @@ export default function ScriptGen() {
           </div>
 
           {/* Output */}
-          <div className="lg:col-span-3">
+          <div className="lg:col-span-3 mb-30">
             <AnimatePresence mode="wait">
               {!script && !isPending && !isError && (
                 <motion.div

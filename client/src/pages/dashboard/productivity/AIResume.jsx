@@ -272,7 +272,7 @@ function AIResume() {
           </div>
 
           {/* ── Output Panel ── */}
-          <div className="space-y-5">
+          <div className="space-y-5 mb-30">
             <AnimatePresence mode="wait">
               {!result && !isPending && !isError && (
                 <motion.div

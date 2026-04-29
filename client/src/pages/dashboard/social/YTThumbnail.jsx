@@ -264,7 +264,7 @@ export default function YTThumbnail() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className="bg-white rounded-2xl border border-gray-100 shadow-sm p-12 flex flex-col items-center justify-center text-center"
+              className="bg-white rounded-2xl border border-gray-100 shadow-sm p-12 flex flex-col items-center justify-center text-center mb-30"
             >
               <div className="w-16 h-16 rounded-2xl bg-gray-50 flex items-center justify-center mb-4">
                 <Youtube size={28} className="text-gray-300" />

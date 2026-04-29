@@ -241,7 +241,7 @@ function AIPdf() {
           </div>
 
           {/* Output Panel */}
-          <div className="space-y-4">
+          <div className="space-y-4 mb-30">
             <AnimatePresence mode="wait">
               {!result && !isPending && !isError && (
                 <motion.div

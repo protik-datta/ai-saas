@@ -151,7 +151,7 @@ export default function BusinessIdea() {
           </div>
 
           {/* Output */}
-          <div className="lg:col-span-3">
+          <div className="lg:col-span-3 mb-30">
             <AnimatePresence mode="wait">
               {!ideas.length && !isPending && !isError && (
                 <motion.div

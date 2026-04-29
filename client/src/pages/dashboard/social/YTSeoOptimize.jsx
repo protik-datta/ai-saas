@@ -177,7 +177,7 @@ export default function YTSeoOptimize() {
           </div>
 
           {/* Output */}
-          <div className="lg:col-span-3">
+          <div className="lg:col-span-3 mb-30">
             <AnimatePresence mode="wait">
               {!result && !isPending && !isError && (
                 <motion.div

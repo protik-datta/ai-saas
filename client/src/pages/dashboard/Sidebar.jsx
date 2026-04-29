@@ -9,10 +9,10 @@ const Sidebar = ({ isOpen, onClose }) => {
   const [isCollapsed, setIsCollapsed] = useState(
     () => localStorage.getItem("sidebarCollapsed") === "true",
   );
+  const [isMobile, setIsMobile] = useState(false);
 
   const location = useLocation();
   const navigate = useNavigate();
-  const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
     const mql = window.matchMedia("(max-width: 768px)");
@@ -22,7 +22,6 @@ const Sidebar = ({ isOpen, onClose }) => {
     return () => mql.removeEventListener("change", checkMobile);
   }, []);
 
-  // FIX: mobile-এ সবসময় full show করবে, collapsed ignore করবে
   const showFull = isMobile ? true : !isCollapsed;
 
   const activeSlug = location.pathname.split("/").pop();
@@ -39,13 +38,12 @@ const Sidebar = ({ isOpen, onClose }) => {
       <motion.div
         initial={false}
         animate={{
-          // FIX: mobile-এ সবসময় 280px — collapsed state ignore
           width: isMobile ? 280 : isCollapsed ? 80 : 280,
           x: isMobile ? (isOpen ? 0 : -280) : 0,
         }}
         transition={{ type: "spring", stiffness: 300, damping: 30 }}
         // FIX: removed overflow-hidden so the dropdown isn't clipped on mobile
-        className="fixed md:relative flex flex-col h-[100dvh] shrink-0 border-r border-gray-200 bg-white shadow-sm z-40 md:z-20"
+        className="fixed md:relative inset-y-0 left-0 md:h-screen flex flex-col shrink-0 border-r border-gray-200 bg-white shadow-sm z-40 md:z-20"
       >
         {/* Toggle Button - desktop only */}
         {!isMobile && (
@@ -83,7 +81,7 @@ const Sidebar = ({ isOpen, onClose }) => {
         </div>
 
         {/* Navigation */}
-        <div className="flex-1 min-h-0 overflow-y-auto px-3 pt-4 pb-24 space-y-8 overflow-x-hidden overscroll-contain">
+        <div className="flex-1 min-h-0 overflow-y-auto px-3 pt-4 pb-32 md:pb-10 space-y-6 scrollbar-hide overflow-x-hidden touch-pan-y">
           {memoTools.map((category) => {
             const Icon = category.icon;
             const hasActiveInChild = category.tools.some(
