@@ -17,13 +17,17 @@ axiosInstance.interceptors.response.use(
   (response) => response,
   (error) => {
     const status = error.response?.status;
+    const currentPath = window.location.pathname;
 
-    if (status === 401) {
-      // Session expired — redirect to login (avoid redirect loops)
-      if (window.location.pathname !== "/login") {
-        showError("Session expired. Please log in again.");
-        window.location.href = "/login";
-      }
+    const protectedRoutes = ["/dashboard"];
+
+    const isProtectedRoute = protectedRoutes.some((route) =>
+      currentPath.startsWith(route),
+    );
+
+    if (status === 401 && isProtectedRoute) {
+      showError("Session expired. Please log in again.");
+      window.location.href = "/login";
     }
 
     return Promise.reject(error);
