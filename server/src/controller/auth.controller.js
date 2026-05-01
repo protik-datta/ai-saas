@@ -16,13 +16,11 @@ const { generateAccessToken } = require("../utils/token");
 
 const OTP_EXPIRE_TIME = 10 * 60 * 1000; // 10 minutes
 
-const isProd = process.env.NODE_ENV === "production";
-
 const setAuthCookie = (res, token) => {
   res.cookie("token", token, {
     httpOnly: true,
-    secure: isProd, // Must be true for sameSite: 'none'
-    sameSite: isProd ? "none" : "lax",
+    secure: true, // Always true for cross-site cookies
+    sameSite: "none",
     maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
   });
 };
@@ -30,8 +28,8 @@ const setAuthCookie = (res, token) => {
 const clearAuthCookie = (res) => {
   res.clearCookie("token", {
     httpOnly: true,
-    secure: isProd,
-    sameSite: isProd ? "none" : "lax",
+    secure: true,
+    sameSite: "none",
   });
 };
 exports.register = asyncHandler(async (req, res) => {
