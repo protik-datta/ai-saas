@@ -23,16 +23,22 @@ if (process.env.NODE_ENV !== "production") {
 }
 
 const sendMail = async (to, subject, text, html) => {
-  const info = await transporter.sendMail({
-    from: `"Creator Studio" <${process.env.EMAIL_USER}>`,
-    to,
-    subject,
-    text,
-    html,
-  });
-
-  logger.info(`Email dispatched → ${to} (messageId: ${info.messageId})`);
-  return info;
+  try {
+    const info = await transporter.sendMail({
+      from: `"Creator Studio" <${process.env.EMAIL_USER}>`,
+      to,
+      subject,
+      text,
+      html,
+    });
+    logger.info(`Email dispatched → ${to} (messageId: ${info.messageId})`);
+    return info;
+  } catch (error) {
+    logger.error(`Email send failed: ${error.message}`);
+    logger.error(`EMAIL_USER set: ${!!process.env.EMAIL_USER}`);
+    logger.error(`EMAIL_PASS set: ${!!process.env.EMAIL_PASS}`);
+    throw error;
+  }
 };
 
 module.exports = { sendMail };
