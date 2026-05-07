@@ -2,7 +2,7 @@ import { lazy, Suspense } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { Toaster } from "react-hot-toast";
 
-import Layout from "./components/layout/layout";
+import Layout from "./components/layout/Layout";
 import AuthLayout from "./components/layout/AuthLayout";
 import ProtectedLayout from "./components/layout/ProtectedLayout";
 import DashboardLayout from "./components/layout/DashboardLayout";
@@ -12,7 +12,7 @@ import NotFound from "./pages/NotFound";
 
 import Login from "./pages/auth/Login";
 import Register from "./pages/auth/Register";
-import Otp from "./pages/auth/Otp";
+import OTP from "./pages/auth/OTP";
 import ForgotPassword from "./pages/auth/ForgotPassword";
 import ResetPassword from "./pages/auth/ResetPassword";
 import DeleteAccount from "./pages/auth/DeleteAccount";
@@ -41,7 +41,7 @@ const App = () => {
           <Route element={<AuthLayout />}>
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
-            <Route path="/otp" element={<Otp />} />
+            <Route path="/otp" element={<OTP />} />
             <Route path="/reset-password/:token?" element={<ResetPassword />} />
           </Route>
 
