@@ -7,7 +7,7 @@ import Loader from '../../utils/Loader';
 
 const OTP_LENGTH = 6;
 
-const Otp = () => {
+const OTP = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -159,4 +159,4 @@ const Otp = () => {
   );
 };
 
-export default Otp;
+export default OTP;
