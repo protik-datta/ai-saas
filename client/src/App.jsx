@@ -2,7 +2,7 @@ import { lazy, Suspense } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { Toaster } from "react-hot-toast";
 
-import Layout from "./components/layout/Layout";
+import Layout from "./components/layout/layout";
 import AuthLayout from "./components/layout/AuthLayout";
 import ProtectedLayout from "./components/layout/ProtectedLayout";
 import DashboardLayout from "./components/layout/DashboardLayout";
